@@ -13,21 +13,6 @@ USER = auth_data["user"]
 TOKEN = auth_data["token"]
 
 
-def getListofJsons(url):
-    lst = []
-    size = 100
-    maxpages = getMaxPages(url, size)
-
-    for i in range(1, maxpages):
-        r = requests.get(url + '&per_page=' + str(size) + '&page=' + str(i), auth=(USER, TOKEN))
-        lst.append(r.json())
-    return lst
-
-
-def getYear(strYear):
-    return strYear[:4]
-
-
 def generateTrendByYear():
 
     years = [str(year) for year in range(2008, 2021)]
@@ -39,13 +24,10 @@ def generateTrendByYear():
         except:
             print("Error :D huehuehuehue time to debug ")
 
-    with open('githubTrendYear.csv', 'w') as file:
-        file.write('2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020\n')
+    with open('data/githubTrendYear.csv', 'w') as file:
+        file.write('Year,Repositories created\n')
         for year in years:
-            file.write(str(tecn["data"][year])+',')
-        file.seek(file.tell() - 1, os.SEEK_SET)
-        file.truncate()
-        file.write('\n')
+            file.write(year + ','+str(tecn["data"][year])+'\n')
 
 
 if __name__ == '__main__':
